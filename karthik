@@ -1,0 +1,97 @@
+import java.util.*;
+
+class Product {
+    String name;
+    double price;
+
+    Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+}
+
+class BlinkitApp {
+    static List<Product> productList = new ArrayList<>();
+    static List<Product> cart = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Add products
+        productList.add(new Product("Apples", 100));
+        productList.add(new Product("Bananas", 40));
+        productList.add(new Product("Milk", 60));
+        productList.add(new Product("Bread", 30));
+
+        System.out.println("Welcome to Mini-Blinkit!");
+
+        while (true) {
+            System.out.println("\n1. View Products\n2. Add to Cart\n3. View Cart\n4. Checkout\n5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            
+            switch (choice) {
+                case 1:
+                    viewProducts();
+                    break;
+                case 2:
+                    addToCart(sc);
+                    break;
+                case 3:
+                    viewCart();
+                    break;
+                case 4:
+                    checkout();
+                    return;
+                case 5:
+                    System.out.println("Thanks for visiting Blinkit!");
+                    return;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    static void viewProducts() {
+        System.out.println("\nAvailable Products:");
+        for (int i = 0; i < productList.size(); i++) {
+            Product p = productList.get(i);
+            System.out.println((i + 1) + ". " + p.name + " - ₹" + p.price);
+        }
+    }
+
+    static void addToCart(Scanner sc) {
+        viewProducts();
+        System.out.print("Enter product number to add to cart: ");
+        int index = sc.nextInt() - 1;
+        if (index >= 0 && index < productList.size()) {
+            cart.add(productList.get(index));
+            System.out.println(productList.get(index).name + " added to cart.");
+        } else {
+            System.out.println("Invalid product number.");
+        }
+    }
+
+    static void viewCart() {
+        if (cart.isEmpty()) {
+            System.out.println("Cart is empty.");
+            return;
+        }
+        System.out.println("\nYour Cart:");
+        double total = 0;
+        for (Product p : cart) {
+            System.out.println("- " + p.name + " - ₹" + p.price);
+            total += p.price;
+        }
+        System.out.println("Total: ₹" + total);
+    }
+
+    static void checkout() {
+        if (cart.isEmpty()) {
+            System.out.println("Cart is empty. Nothing to checkout.");
+            return;
+        }
+        viewCart();
+        System.out.println("Order placed! Your groceries will be delivered soon 🚚");
+    }
+}
